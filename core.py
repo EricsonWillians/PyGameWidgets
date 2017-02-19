@@ -1,23 +1,28 @@
 import pygame
 import math
 
-class Entity:
+class Shape:
 	
-	def __init__(self, name)
-		self.name = name
+	def __init__(self, pos, dimensions):
+		self.pos = pos
+		self.dimensions = dimensions
+		self.x = pos[0]
+		self.y = pos[1]
+		self.w = dimensions[0]
+		self.h = dimensions[1]
 		
-class Shape(Entity):
-	
-	def __init__(self, x, y, w, h):
-		Entity.__init__(self, "Shape")
-		self.x = x
-		self.y = y
-		self.w = w
-		self.h = h
+	def center(self, window_dimensions):
+		self.x = (window_dimensions[0] / 2) - (self.w / 2)
+		self.y = (window_dimensions[1] / 2) - (self.h / 2)
 		
 class Rectangle(Shape):
 	
-	def __init__(self
+	def __init__(self, color, pos, dimensions):
+		Shape.__init__(self, pos, dimensions)
+		self.color = color
+		
+	def draw(self, surface):
+		pygame.draw.rect(surface, self.color, pygame.Rect(self.x, self.y, self.w, self.h))
 	
 if __name__ == "__main__":	
 
