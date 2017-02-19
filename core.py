@@ -1,9 +1,12 @@
 import pygame
 import math
 
-class Shape:
+FILLED = 0
+
+class Shape(pygame.Surface):
 	
 	def __init__(self, pos, dimensions):
+		pygame.Surface.__init__(self, dimensions, pygame.SRCALPHA, 32)
 		self.pos = pos
 		self.dimensions = dimensions
 		self.x = pos[0]
@@ -17,21 +20,25 @@ class Shape:
 		
 class Rectangle(Shape):
 	
-	def __init__(self, color, pos, dimensions):
+	def __init__(self, color, pos, dimensions, width=FILLED):
 		Shape.__init__(self, pos, dimensions)
 		self.color = color
+		self.width = width
 		
 	def draw(self, surface):
-		pygame.draw.rect(surface, self.color, pygame.Rect(self.x, self.y, self.w, self.h))
+		pygame.draw.rect(self, self.color, pygame.Rect(0, 0, self.w, self.h), self.width)
+		surface.blit(self, (self.x, self.y))
 		
 class Ellipse(Shape):
 	
-	def __init__(self, color, pos, dimensions):
+	def __init__(self, color, pos, dimensions, width=FILLED):
 		Shape.__init__(self, pos, dimensions)
 		self.color = color
+		self.width = width
 		
 	def draw(self, surface):
-		pygame.draw.ellipse(surface, self.color, pygame.Rect(self.x, self.y, self.w, self.h))
+		pygame.draw.ellipse(self, self.color, pygame.Rect(0, 0, self.w, self.h), self.width)
+		surface.blit(self, (self.x, self.y))
 		
 class SysFont(Shape):
 	
@@ -45,7 +52,3 @@ class SysFont(Shape):
 
 	def draw_text(self, surface, text):
 		surface.blit(self.font.render(text, 1, self.color, (self.w, self.h)), (self.x, self.y))
-
-if __name__ == "__main__":	
-
-	pass

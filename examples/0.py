@@ -20,9 +20,9 @@ if __name__ == "__main__":
 			if e.type == pygame.QUIT:
 				sys.exit()
 
-	r = core.Ellipse((255, 255, 255), (0, 0), (100, 100))
+	r = core.Rectangle((255, 255, 255), (0, 0), (100, 100))
 	r.center((WINDOW_WIDTH, WINDOW_HEIGHT))
-	f = core.SysFont((255, 255, 255), (0, 0), (100, 100), "monospace", False, True)
+	f = core.SysFont((255, 255, 255, 50), (0, 0), (100, 100), "monospace", True, True)
 
 	def redraw():
 		pygame.display.flip()
