@@ -52,3 +52,12 @@ class SysFont(Shape):
 
 	def draw_text(self, surface, text):
 		surface.blit(self.font.render(text, 1, self.color, (self.w, self.h)), (self.x, self.y))
+
+class Grid:
+
+	def __init__(self, rows, columns, cell_size):
+		self.rows = rows
+		self.columns = columns
+		self.cell_size = cell_size
+		self.cell_w = cell_size[0]
+		self.cell_h = cell_size[1]

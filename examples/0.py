@@ -21,7 +21,7 @@ if __name__ == "__main__":
 			if e.type == pygame.QUIT:
 				sys.exit()
 
-	panel = widgets.Panel((0, 0), 3, 3, (128, 64))
+	panel = widgets.Panel((0, 0), core.Grid(3, 3, (124, 68)), (255, 255, 255, 255))
 
 	def redraw():
 		pygame.display.flip()
