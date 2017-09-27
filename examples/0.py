@@ -1,7 +1,8 @@
 import sys
 sys.path.append("..")
 import pygame
-import core	
+from PygameUser import core
+from PygameUser import widgets
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 728
@@ -20,15 +21,12 @@ if __name__ == "__main__":
 			if e.type == pygame.QUIT:
 				sys.exit()
 
-	r = core.Rectangle((255, 255, 255), (0, 0), (100, 100))
-	r.center((WINDOW_WIDTH, WINDOW_HEIGHT))
-	f = core.SysFont((255, 255, 255, 50), (0, 0), (100, 100), "monospace", True, True)
+	panel = widgets.Panel((0, 0), 3, 3, (128, 64))
 
 	def redraw():
 		pygame.display.flip()
 		screen.fill((0, 0, 0))
-		f.draw_text(screen, "Whatever")
-		r.draw(screen)
+		panel.draw(screen)
 
 while (running):
 	clock.tick(FPS)
