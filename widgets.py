@@ -4,7 +4,13 @@ from PygameUser import core
 class Panel(core.Shape):
 	
 	def __init__(self, pos, grid, rgba):
-		core.Shape.__init__(self, pos, (grid.columns * grid.cell_size[0], grid.rows * grid.cell_size[1]))
+		print(grid.columns * grid.cell_size[0])
+		self.cell_size = grid.cell_size
+		self.w = grid.columns * grid.cell_size[0]
+		self.h = grid.rows * grid.cell_size[1]
+		self.x_positions = [x for x in range(0, self.w, grid.cell_size[0])]
+		self.y_positions = [x for x in range(0, self.h, grid.cell_size[1])]
+		core.Shape.__init__(self, pos, (self.w, self.h))
 		self.pos = pos
 		self.grid = grid
 		self.rgba = rgba
@@ -20,16 +26,28 @@ class Panel(core.Shape):
 
 class Widget:
 	
-	def __init__(self, parent, grid_cfg):
+	def __init__(self, parent):
 		self.parent = parent
-		self.grid_pos = grid_cfg
+		self.rect = None
 
-class Button(Widget, Shape):
+	def draw(self, surface):
+		self.rect.draw(surface)
+		
+class Button(Widget, core.Shape):
 	
-	def __init__(self, text, command, parent, grid_cfg):
-		Widget.__init__(self, parent, grid_cfg)
-		# This needs to be better studied...
-		# pygame.Surface.__init__(self, dimensions, pygame.SRCALPHA, 32)
+	def __init__(self, text, command, parent, position_in_grid):
+		Widget.__init__(self, parent)
 		self.text = text
 		self.command = command
-		self.rect = core.Rectangle((0, 255, 0, 100))
+		self.x = self.parent.x_positions[position_in_grid[0]]
+		self.y = self.parent.y_positions[position_in_grid[1]]
+		self.w = self.parent.cell_size[0]
+		self.h = self.parent.cell_size[1]
+		self.color = (0, 0, 0, 0)
+		self.rect = core.Rectangle(self.color, (self.x, self.y), (self.w, self.h))
+		
+	def set_color(self, rgba):
+		self.color = rgba
+		self.rect = core.Rectangle(self.color, (self.x, self.y), (self.w, self.h))
+		
+	

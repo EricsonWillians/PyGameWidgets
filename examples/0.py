@@ -22,11 +22,14 @@ if __name__ == "__main__":
 				sys.exit()
 
 	panel = widgets.Panel((0, 0), core.Grid(3, 3, (124, 68)), (255, 255, 255, 255))
+	button = widgets.Button("Test", None, panel, (2, 2))
+	button.set_color((0, 255, 0, 255))
 
 	def redraw():
 		pygame.display.flip()
 		screen.fill((0, 0, 0))
 		panel.draw(screen)
+		button.draw(screen)
 
 while (running):
 	clock.tick(FPS)
