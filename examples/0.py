@@ -21,15 +21,18 @@ if __name__ == "__main__":
 			if e.type == pygame.QUIT:
 				sys.exit()
 
-	panel = widgets.Panel((0, 0), core.Grid(3, 3, (124, 68)))
+	panel = widgets.Panel(core.Grid(3, 3, (124, 68)), None, None, (0, 0))
 	panel.set_color((255, 255, 255, 255))
-	button = widgets.Button("Test", None, panel, (1, 2))
+	subpanel = widgets.Panel(core.Grid(3, 3, (int(124 / 2), 34)), panel, (1, 2))
+	subpanel.set_color((200, 200, 200, 255))
+	button = widgets.Button("Test", None, subpanel, (1, 1))
 	button.set_color((0, 255, 0, 255))
 
 	def redraw():
 		pygame.display.flip()
 		screen.fill((0, 0, 0))
 		panel.draw(screen)
+		subpanel.draw(screen)
 		button.draw(screen)
 
 while (running):
