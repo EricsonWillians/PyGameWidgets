@@ -8,7 +8,13 @@ class Component:
 		self.dimensions = dimensions
 		self.parent = parent
 
-class RectWidget(Component, core.Shape):
+class Widget(Component, core.Shape):
+	
+	def __init__(self, pos, dimensions, parent=None):
+		Component.__init__(self, pos, dimensions, parent)
+		core.Shape.__init__(self, pos, self.dimensions)
+		
+class RectWidget(Widget):
 	
 	def __init__(self, pos, dimensions, parent=None):
 		Component.__init__(self, pos, dimensions, parent)
