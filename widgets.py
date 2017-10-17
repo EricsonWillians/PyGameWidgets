@@ -7,7 +7,9 @@ class Component:
 		self.pos = pos
 		self.dimensions = dimensions
 		self.parent = parent
-
+		self.parent_x_positions = [0]
+		self.parent_y_positions = [0]
+		
 class Widget(Component, core.Shape):
 	
 	def __init__(self, pos, dimensions, parent=None):
@@ -29,33 +31,46 @@ class RectWidget(Widget):
 		self.color = rgba
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
 
+def rpc(p, l=[]):
+	if p.parent:
+		rpc(p.parent)
+	else:
+		l.append(p)
+	return l
+
 class Panel(RectWidget):
 	
 	def __init__(self, grid=None, parent=None, position_in_grid=None, pos=None):
-		self.pos = pos
+		if pos:
+			self.pos = pos
+		else:
+			self.pos = (0, 0)
 		self.grid = grid
 		self.cell_size = self.grid.cell_size
-		self.dimensions = [
+		self.dimensions = (
 			self.grid.columns * self.grid.cell_size[0], 
 			self.grid.rows * self.grid.cell_size[1]
-		] 
+		)
 		self.x_positions = [x for x in range(0, self.dimensions[0], self.grid.cell_size[0])]
 		self.y_positions = [x for x in range(0, self.dimensions[1], self.grid.cell_size[1])]
 		if (parent and position_in_grid):
 			self.parent = parent
 			self.position_in_grid = position_in_grid
-			self.pos = [
-				self.parent.x_positions[self.position_in_grid[0]], 
-				self.parent.y_positions[self.position_in_grid[1]]
-			]
+			parents = rpc(parent)
+			lastParent = parents[len(parents)-1]
+			self.x_positions = [x for x in range(0, lastParent.dimensions[0], lastParent.grid.cell_size[0])]
+			self.y_positions = [x for x in range(0, lastParent.dimensions[1], lastParent.grid.cell_size[1])]
 			self.dimensions = [
-				self.parent.grid.cell_size[0], 
-				self.parent.grid.cell_size[1]
+				lastParent.grid.cell_size[0], 
+				lastParent.grid.cell_size[1]
 			]
-			RectWidget.__init__(self, self.pos, self.dimensions, parent)
-		if (pos):
-			RectWidget.__init__(self, self.pos, self.dimensions)
-		
+			self.pos = (
+				self.x_positions[self.position_in_grid[0]] + lastParent.pos[0],
+				self.y_positions[self.position_in_grid[1]] + lastParent.pos[1]
+			)
+		else:
+			self.position_in_grid = (0, 0)
+		RectWidget.__init__(self, self.pos, self.dimensions)
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
 		
 	def draw(self, surface):
@@ -68,16 +83,6 @@ class Button(RectWidget):
 		self.text = text
 		self.command = command
 		self.position_in_grid = position_in_grid
-		if (parent.parent):
-			self.pos = [
-				self.parent.x_positions[self.position_in_grid[0]] + self.parent.parent.x_positions[self.parent.position_in_grid[0]], 
-				self.parent.y_positions[self.position_in_grid[1]] + self.parent.parent.y_positions[self.parent.position_in_grid[1]]
-			]
-		else:	
-			self.pos = [
-				self.parent.x_positions[self.position_in_grid[0]], 
-				self.parent.y_positions[self.position_in_grid[1]]
-			]
 		self.dimensions = [
 			self.parent.cell_size[0], 
 			self.parent.cell_size[1]
