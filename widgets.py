@@ -122,19 +122,27 @@ class TextButton(RectButton):
 	def __init__(self, parent, position_in_grid, text):
 		RectButton.__init__(self, parent, position_in_grid)
 		self.text = text
-
-	def draw(self, surface):
-		self.rect.draw(surface)
-		half_w = self.dimensions[0] / 2
-		half_h = self.dimensions[1] / 2
-		text_rect = self.text.font.render(
+		self.half_w = self.dimensions[0] / 2
+		self.half_h = self.dimensions[1] / 2
+		self.text_rect = self.text.font.render(
 			self.text.value, 
 			1, 
 			self.text.color
 		)
-		half_text_w = text_rect.get_rect().width / 2
-		half_text_h = text_rect.get_rect().height / 2
+		self.half_text_w = self.text_rect.get_rect().width / 2
+		self.half_text_h = self.text_rect.get_rect().height / 2
+
+	def set_text(self, new_text):
+		self.text.value = new_text
+		self.text_rect = self.text.font.render(
+			self.text.value, 
+			1, 
+			self.text.color
+		)
+
+	def draw(self, surface):
+		self.rect.draw(surface)
 		surface.blit(
-			text_rect, 
-			(self.pos[0] + (half_w - half_text_w), self.pos[1] + (half_h - half_text_h), self.dimensions[0], self.dimensions[1])
+			self.text_rect, 
+			(self.pos[0] + (self.half_w - self.half_text_w), self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
 		)

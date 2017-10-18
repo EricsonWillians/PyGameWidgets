@@ -68,9 +68,5 @@ class Text:
 class Grid:
 
 	def __init__(self, grid_size, cell_size):
-		if not cell_size[0] % grid_size[0] == 0: 
-			raise Exception("The division of the cell width by the number of columns in the grid must have no remainder.")
-		elif not cell_size[1] % grid_size[1] == 0: 
-			raise Exception("The division of the cell height by the number of rows in the grid must have no remainder.")
 		self.grid_size = grid_size
 		self.cell_size = cell_size
