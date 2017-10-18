@@ -1,8 +1,8 @@
 import sys
 sys.path.append("..")
 import pygame
-from PyVenus import core
-from PyVenus import widgets
+from PyCliche import core
+from PyCliche import widgets
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 728
@@ -16,14 +16,9 @@ running = True
 
 if __name__ == "__main__":	
 
-	def handle_events():
-		for e in pygame.event.get():
-			if e.type == pygame.QUIT:
-				sys.exit()
-
 	panel = widgets.Panel(core.Grid((4, 4), (128, 128)), None, None, (0, 0))
 	panel.set_color((255, 255, 255, 255))
-	button = widgets.Button("Test", None, panel, (3, 3))
+	button = widgets.Button("Test", panel, (3, 3))
 	button.set_color((0, 255, 0, 255))
 
 	def redraw():
@@ -35,6 +30,9 @@ if __name__ == "__main__":
 while (running):
 	clock.tick(FPS)
 	redraw()
-	handle_events()
+	for e in pygame.event.get():
+		if e.type == pygame.QUIT:
+			sys.exit()
+		button.on_click(e, lambda: button.set_color([255, 0, 0, 255]))
 
 	

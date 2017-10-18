@@ -24,6 +24,7 @@ class Rectangle(Shape):
 		Shape.__init__(self, pos, dimensions)
 		self.color = color
 		self.width = width
+		self.R = pygame.Rect(self.pos[0], self.pos[1], self.dimensions[0], self.dimensions[1])
 		
 	def draw(self, surface):
 		pygame.draw.rect(self, self.color, pygame.Rect(0, 0, self.w, self.h), self.width)
