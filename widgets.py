@@ -127,11 +127,14 @@ class TextButton(RectButton):
 		self.rect.draw(surface)
 		half_w = self.dimensions[0] / 2
 		half_h = self.dimensions[1] / 2
-		half_text_size = self.text.size / 2
-		surface.blit(self.text.font.render(
+		text_rect = self.text.font.render(
 			self.text.value, 
 			1, 
-			self.text.color, 
-			(self.dimensions[0], self.dimensions[1])), 
-			(self.pos[0] + (half_w - half_text_size), self.pos[1] + (half_h - half_text_size))
+			self.text.color
+		)
+		half_text_w = text_rect.get_rect().width / 2
+		half_text_h = text_rect.get_rect().height / 2
+		surface.blit(
+			text_rect, 
+			(self.pos[0] + (half_w - half_text_w), self.pos[1] + (half_h - half_text_h), self.dimensions[0], self.dimensions[1])
 		)

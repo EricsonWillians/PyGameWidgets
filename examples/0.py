@@ -17,9 +17,9 @@ running = True
 if __name__ == "__main__":	
 
 	panel = widgets.Panel(core.Grid((4, 4), (128, 128)), None, None, (0, 0))
-	panel.set_color((255, 255, 255, 255))
-	button = widgets.TextButton(panel, (3, 3), core.Text("OK"))
-	button.set_color((0, 100, 0, 255))
+	panel.set_color((55, 55, 55, 255))
+	button = widgets.TextButton(panel, (3, 3), core.Text("Click me!", 16))
+	button.set_color((0, 100, 0, 150))
 
 	def redraw():
 		pygame.display.flip()

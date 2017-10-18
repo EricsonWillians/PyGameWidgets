@@ -56,7 +56,7 @@ class SysFont(Shape):
 
 class Text:
 	
-	def __init__(self, value, color=[255, 255, 255, 255], size=32, font_name="monospace", bold=False, italic=False):
+	def __init__(self, value, size=32, color=[255, 255, 255, 255], font_name="monospace", bold=False, italic=False):
 		self.value = value
 		self.color = color
 		self.size = size
