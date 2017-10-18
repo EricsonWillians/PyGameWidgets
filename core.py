@@ -54,6 +54,17 @@ class SysFont(Shape):
 	def draw_text(self, surface, text):
 		surface.blit(self.font.render(text, 1, self.color, (self.w, self.h)), (self.x, self.y))
 
+class Text:
+	
+	def __init__(self, value, color=[255, 255, 255, 255], size=32, font_name="monospace", bold=False, italic=False):
+		self.value = value
+		self.color = color
+		self.size = size
+		self.font_name = font_name
+		self.bold = bold
+		self.italic = italic
+		self.font = pygame.font.SysFont(self.font_name, self.size, self.bold, self.italic)
+
 class Grid:
 
 	def __init__(self, grid_size, cell_size):

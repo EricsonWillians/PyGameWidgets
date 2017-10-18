@@ -75,10 +75,9 @@ class Panel(RectWidget):
 	def draw(self, surface):
 		self.rect.draw(surface)
 		
-class Button(RectWidget):
+class RectButton(RectWidget):
 
-	def __init__(self, text, parent, position_in_grid):
-		self.text = text
+	def __init__(self, parent, position_in_grid):
 		self.parent = parent
 		self.position_in_grid = position_in_grid
 		self.dimensions = [
@@ -99,3 +98,40 @@ class Button(RectWidget):
 			if event.button == 1:
 				if self.rect.R.collidepoint(event.pos):
 					function(*args) if args else function()
+
+	def on_release(self, event, function, *args):
+		if event.type == pygame.MOUSEBUTTONUP:
+			if event.button == 1:
+				if self.rect.R.collidepoint(event.pos):
+					function(*args) if args else function()
+
+	def on_mouse_button_click(self, event, mouse_button, function, *args):
+		if event.type == pygame.MOUSEBUTTONDOWN:
+			if event.button == mouse_button:
+				if self.rect.R.collidepoint(event.pos):
+					function(*args) if args else function()
+
+	def on_mouse_button_release(self, event, mouse_button, function, *args):
+		if event.type == pygame.MOUSEBUTTONUP:
+			if event.button == mouse_button:
+				if self.rect.R.collidepoint(event.pos):
+					function(*args) if args else function()
+
+class TextButton(RectButton):
+
+	def __init__(self, parent, position_in_grid, text):
+		RectButton.__init__(self, parent, position_in_grid)
+		self.text = text
+
+	def draw(self, surface):
+		self.rect.draw(surface)
+		half_w = self.dimensions[0] / 2
+		half_h = self.dimensions[1] / 2
+		half_text_size = self.text.size / 2
+		surface.blit(self.text.font.render(
+			self.text.value, 
+			1, 
+			self.text.color, 
+			(self.dimensions[0], self.dimensions[1])), 
+			(self.pos[0] + (half_w - half_text_size), self.pos[1] + (half_h - half_text_size))
+		)
