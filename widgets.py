@@ -1,5 +1,5 @@
 import pygame
-from PygameUser import core
+from PyVenus import core
 
 class Component:
 
@@ -46,10 +46,9 @@ class Panel(RectWidget):
 		else:
 			self.pos = (0, 0)
 		self.grid = grid
-		self.cell_size = self.grid.cell_size
 		self.dimensions = (
-			self.grid.columns * self.grid.cell_size[0], 
-			self.grid.rows * self.grid.cell_size[1]
+			self.grid.grid_size[0] * self.grid.cell_size[0], 
+			self.grid.grid_size[1] * self.grid.cell_size[1]
 		)
 		self.x_positions = [x for x in range(0, self.dimensions[0], self.grid.cell_size[0])]
 		self.y_positions = [x for x in range(0, self.dimensions[1], self.grid.cell_size[1])]
@@ -77,14 +76,21 @@ class Panel(RectWidget):
 		self.rect.draw(surface)
 		
 class Button(RectWidget):
-	
 	def __init__(self, text, command, parent, position_in_grid):
-		RectWidget.__init__(self, parent.pos, parent.dimensions, parent)
 		self.text = text
 		self.command = command
+		self.parent = parent
 		self.position_in_grid = position_in_grid
 		self.dimensions = [
-			self.parent.cell_size[0], 
-			self.parent.cell_size[1]
+			self.parent.grid.cell_size[0], 
+			self.parent.grid.cell_size[1]
 		]
+		self.x_positions = [x for x in range(0, self.parent.dimensions[0], self.dimensions[0])]
+		self.y_positions = [x for x in range(0, self.parent.dimensions[1], self.dimensions[1])]
+		print(self.x_positions)
+		self.pos = [
+			self.x_positions[self.position_in_grid[0]] + self.parent.pos[0],
+			self.y_positions[self.position_in_grid[1]] + self.parent.pos[1]
+		]
+		RectWidget.__init__(self, self.pos, self.dimensions, self.parent)
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
