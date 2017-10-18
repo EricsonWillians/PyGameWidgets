@@ -1,2 +1,3 @@
-# PygameUser
-An open source graphical user interface for pygame users.
+# PyCliche
+
+Wait for a major release for the documentation.
