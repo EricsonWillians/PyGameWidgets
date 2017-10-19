@@ -2,6 +2,7 @@ import pygame
 import math
 
 FILLED = 0
+DEFAULT_WIDTH = 16
 
 class Shape(pygame.Surface):
 	
@@ -25,6 +26,9 @@ class Rectangle(Shape):
 		self.color = color
 		self.width = width
 		self.R = pygame.Rect(self.pos[0], self.pos[1], self.dimensions[0], self.dimensions[1])
+
+	def set_pygame_rect(R):
+		self.R = R
 		
 	def draw(self, surface):
 		pygame.draw.rect(self, self.color, pygame.Rect(0, 0, self.w, self.h), self.width)

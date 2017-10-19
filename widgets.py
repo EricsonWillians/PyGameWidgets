@@ -10,35 +10,45 @@ class Component:
 		self.parent_x_positions = [0]
 		self.parent_y_positions = [0]
 		
-class Widget(Component, core.Shape):
+class Widget(Component):
 	
 	def __init__(self, pos, dimensions, parent=None):
 		Component.__init__(self, pos, dimensions, parent)
-		core.Shape.__init__(self, pos, self.dimensions)
 		
 class RectWidget(Widget):
 	
 	def __init__(self, pos, dimensions, parent=None):
 		Component.__init__(self, pos, dimensions, parent)
-		core.Shape.__init__(self, pos, self.dimensions)
 		self.color = (0, 0, 0, 0)
+		self.width = core.FILLED
+		self.pos = pos
+		self.dimensions = dimensions
 		self.rect = None
-		
+
+	def set_color(self, rgba):
+		self.color = rgba
+		self.rect = core.Rectangle(self.color, self.pos, self.dimensions, self.width)
+
+	def set_width(self, width):
+		self.width = width
+		self.rect = core.Rectangle(self.color, self.pos, self.dimensions, self.width)
+
+	def set_solid(self, value):
+		if value:
+			self.set_width(0)
+		else:
+			self.set_width(core.DEFAULT_WIDTH)
+
 	def set_span(self, span):
 		self.span = [span[0]+1, span[1]+1]
 		self.span_w = sum([self.dimensions[0] for w in range(self.span[0])])
 		self.span_h = sum([self.dimensions[1] for h in range(self.span[1])])
-		print([self.span_w, self.span_h])
 		self.dimensions = [
 			self.span_w,
 			self.span_h
 		]
-		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
+		self.rect = core.Rectangle(self.color, self.pos, self.dimensions, self.width)
 		if hasattr(self, "text"): self.set_text(self.text.value)
-
-	def set_color(self, rgba):
-		self.color = rgba
-		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
 
 	def set_image(self, path):
 		self.image = pygame.transform.scale(
@@ -92,7 +102,7 @@ class Panel(RectWidget):
 		else:
 			self.position_in_grid = (0, 0)
 		RectWidget.__init__(self, self.pos, self.dimensions)
-		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
+		self.rect = core.Rectangle(self.color, self.pos, self.dimensions, self.width)
 		
 class RectButton(RectWidget):
 
