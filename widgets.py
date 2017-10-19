@@ -24,12 +24,27 @@ class RectWidget(Widget):
 		self.color = (0, 0, 0, 0)
 		self.rect = None
 		
-	def draw(self, surface):
-		self.rect.draw(surface)
-		
+	def set_span(self, span):
+		self.span = [span[0]+1, span[1]+1]
+		self.span_w = sum([self.dimensions[0] for w in range(self.span[0])])
+		self.span_h = sum([self.dimensions[1] for h in range(self.span[1])])
+		print([self.span_w, self.span_h])
+		self.dimensions = [
+			self.span_w,
+			self.span_h
+		]
+		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
+		if self.text: self.set_text(self.text.value)
+
 	def set_color(self, rgba):
 		self.color = rgba
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
+
+	def set_image(self, *www):
+		pass
+
+	def draw(self, surface):
+		self.rect.draw(surface)
 
 def rpc(p, l=[]):
 	if p.parent:
@@ -71,9 +86,6 @@ class Panel(RectWidget):
 			self.position_in_grid = (0, 0)
 		RectWidget.__init__(self, self.pos, self.dimensions)
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
-		
-	def draw(self, surface):
-		self.rect.draw(surface)
 		
 class RectButton(RectWidget):
 
@@ -122,6 +134,9 @@ class TextButton(RectButton):
 	def __init__(self, parent, position_in_grid, text):
 		RectButton.__init__(self, parent, position_in_grid)
 		self.text = text
+		self.set_text(text.value)
+		
+	def set_text(self, new_text):
 		self.half_w = self.dimensions[0] / 2
 		self.half_h = self.dimensions[1] / 2
 		self.text_rect = self.text.font.render(
@@ -131,8 +146,6 @@ class TextButton(RectButton):
 		)
 		self.half_text_w = self.text_rect.get_rect().width / 2
 		self.half_text_h = self.text_rect.get_rect().height / 2
-
-	def set_text(self, new_text):
 		self.text.value = new_text
 		self.text_rect = self.text.font.render(
 			self.text.value, 
