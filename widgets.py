@@ -56,12 +56,25 @@ class RectWidget(Widget):
 			(self.dimensions[0], self.dimensions[1])
 		)
 
+	def set_border(self, color, width):
+		if width == 0: raise Exception("Border width cannot be 0.")
+		border_dimensions = [
+			self.dimensions[0] + (width * 2),
+			self.dimensions[1] + (width * 2)
+		]
+		border_pos = [
+			self.pos[0] - width,
+			self.pos[1] - width
+		]
+		self.border = core.Rectangle(color, self.pos, self.dimensions, width)
+
 	def draw_image(self, surface):
 		surface.blit(self.image, (self.pos[0], self.pos[1]))
 
 	def draw(self, surface):
 		self.rect.draw(surface)
 		if hasattr(self, "image"): self.draw_image(surface)
+		if hasattr(self, "border"): self.border.draw(surface)
 
 def rpc(p, l=[]):
 	if p.parent:
@@ -172,8 +185,10 @@ class TextButton(RectButton):
 
 	def draw(self, surface):
 		self.rect.draw(surface)
+		if hasattr(self, "border"): self.border.draw(surface)
 		if hasattr(self, "image"): self.draw_image(surface)
 		surface.blit(
 			self.text_rect, 
 			(self.pos[0] + (self.half_w - self.half_text_w), self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
 		)
+

@@ -4,7 +4,7 @@ import pygame
 from PyCliche import core
 from PyCliche import widgets
 
-# set_width example.
+# Widget border example.
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 728
@@ -21,24 +21,22 @@ if __name__ == "__main__":
 	panel.set_color((155, 155, 155, 255))
 	midpanel = widgets.Panel(core.Grid((1, 7), (panel.grid.cell_size[0], int(WINDOW_HEIGHT / 7))), panel, (1, 0), None)
 	panel.set_color((55, 55, 55, 255))
-	buttons = [widgets.TextButton(midpanel, (0, n), core.Text("Button " + str(n), 32)) for n in range(7)]
-	[x.set_color((0, 100, 0, 150)) for x in buttons]
-	[x.set_width(16) for x in buttons]
+	button = widgets.TextButton(midpanel, (0, 0), core.Text("Button " + str(0), 32))
+	button.set_color((0, 100, 0, 150))
+	button.set_border((255, 0, 0, 255), 16)
 
 	def redraw():
 		pygame.display.flip()
 		screen.fill((0, 0, 0))
 		panel.draw(screen)
 		midpanel.draw(screen)
-		[x.draw(screen) for x in buttons]
+		button.draw(screen)
 
 while (running):
-	clock.tick(FPS)
-	redraw()
-	for e in pygame.event.get():
-		if e.type == pygame.QUIT:
-			sys.exit()
-		[x.on_click(e, lambda: x.set_text("Pressed.")) for x in buttons]
-		[x.on_release(e, lambda: x.set_text("Released")) for x in buttons]
-
-	
+    clock.tick(FPS)
+    redraw()
+    for e in pygame.event.get():
+        if e.type == pygame.QUIT:
+            sys.exit()
+        button.on_click(e, lambda: button.set_text("Pressed."))
+        button.on_release(e, lambda: button.set_text("Released"))
