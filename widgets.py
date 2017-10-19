@@ -34,17 +34,24 @@ class RectWidget(Widget):
 			self.span_h
 		]
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
-		if self.text: self.set_text(self.text.value)
+		if hasattr(self, "text"): self.set_text(self.text.value)
 
 	def set_color(self, rgba):
 		self.color = rgba
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
 
-	def set_image(self, *www):
-		pass
+	def set_image(self, path):
+		self.image = pygame.transform.scale(
+			pygame.image.load(path), 
+			(self.dimensions[0], self.dimensions[1])
+		)
+
+	def draw_image(self, surface):
+		surface.blit(self.image, (self.pos[0], self.pos[1]))
 
 	def draw(self, surface):
 		self.rect.draw(surface)
+		if hasattr(self, "image"): self.draw_image(surface)
 
 def rpc(p, l=[]):
 	if p.parent:
@@ -155,6 +162,7 @@ class TextButton(RectButton):
 
 	def draw(self, surface):
 		self.rect.draw(surface)
+		if hasattr(self, "image"): self.draw_image(surface)
 		surface.blit(
 			self.text_rect, 
 			(self.pos[0] + (self.half_w - self.half_text_w), self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
