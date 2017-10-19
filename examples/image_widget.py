@@ -5,7 +5,7 @@ import pygame
 from PyCliche import core
 from PyCliche import widgets
 
-# Image buttons example.
+# Image widget example.
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 728

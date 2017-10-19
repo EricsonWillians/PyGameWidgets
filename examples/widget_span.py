@@ -4,7 +4,7 @@ import pygame
 from PyCliche import core
 from PyCliche import widgets
 
-# Button span example.
+# Widget span example.
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 728

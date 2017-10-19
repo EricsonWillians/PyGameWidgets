@@ -116,9 +116,9 @@ class Panel(RectWidget):
 			self.position_in_grid = (0, 0)
 		RectWidget.__init__(self, self.pos, self.dimensions)
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions, self.width)
-		
-class RectButton(RectWidget):
 
+class PanelSpecific(RectWidget):
+	
 	def __init__(self, parent, position_in_grid):
 		self.parent = parent
 		self.position_in_grid = position_in_grid
@@ -134,6 +134,11 @@ class RectButton(RectWidget):
 		]
 		RectWidget.__init__(self, self.pos, self.dimensions, self.parent)
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
+
+class RectButton(PanelSpecific):
+
+	def __init__(self, parent, position_in_grid):
+		PanelSpecific.__init__(self, parent, position_in_grid)
 
 	def on_click(self, event, function, *args):
 		if event.type == pygame.MOUSEBUTTONDOWN:
@@ -192,3 +197,8 @@ class TextButton(RectButton):
 			(self.pos[0] + (self.half_w - self.half_text_w), self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
 		)
 
+class TextInput(RectWidget):
+	
+	def __init__(self, parent, position_in_grid):
+		pass
+		
