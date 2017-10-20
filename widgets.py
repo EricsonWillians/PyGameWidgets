@@ -218,4 +218,89 @@ class TextInput(PanelSpecific):
 
 	def __init__(self, parent, position_in_grid):
 		PanelSpecific.__init__(self, parent, position_in_grid)
-		
+		self.focused = False
+		self.set_text("", 16)
+		self.value = []
+		self.set_carret(
+			core.WHITE, 
+			[self.pos[0], self.pos[1]], 
+			[self.dimensions[0] / (self.parent.get_cell_width() / self.text.size), self.dimensions[1]], 
+			core.FILLED
+		)
+
+	def set_carret(self, color, pos, dimensions, width):
+		self.carret_color = color
+		self.carret_pos = pos
+		self.carret_dimensions = dimensions
+		self.carret_width = width
+		self.carret = core.Rectangle(
+			self.carret_color,
+			self.carret_pos,
+			self.carret_dimensions,
+			self.carret_width
+		)
+		self.carret_counter = 0
+		self.carret_blinking_state_manager = False
+		self.set_carret_blinking_speed(75)
+
+	def set_carret_blinking_speed(self, value):
+		self.carret_blinking_speed = value
+
+	def set_carret_color(self, color):
+		self.carret_color = color
+		self.set_carret(
+			self.carret_color,
+			self.carret_pos,
+			self.carret_dimensions,
+			self.carret_width
+		)
+
+	def set_text(self, value, size):
+		self.text_value = value
+		self.text_size = size
+		self.half_w = self.dimensions[0] / 2
+		self.half_h = self.dimensions[1] / 2
+		self.text = core.Text(self.text_value, self.text_size)
+		self.text_rect = self.text.font.render(
+			self.text.value, 
+			1, 
+			self.text.color
+		)
+		self.half_text_w = self.text_rect.get_rect().width / 2
+		self.half_text_h = self.text_rect.get_rect().height / 2
+
+	def register(self, event):
+		if event.type == pygame.MOUSEBUTTONDOWN:
+			if event.button == 1:
+				if self.rect.R.collidepoint(event.pos):
+					self.focused = True
+				else:
+					self.focused = False
+		if event.type == pygame.KEYDOWN:
+			if self.focused:
+				self.value.append(pygame.key.name(event.key))
+				self.set_text(''.join(self.value), self.text_size)
+
+	def draw(self, surface):
+		self.rect.draw(surface)
+		if hasattr(self, "border"): self.border.draw(surface)
+		if hasattr(self, "image"): self.draw_image(surface)
+		if hasattr(self, "carret") and self.focused: 
+			self.carret.draw(surface)
+			if self.carret_counter == self.carret_blinking_speed:
+				self.carret_blinking_state_manager = True
+			if self.carret_blinking_state_manager:
+				self.carret.set_alpha(0)
+				self.carret_counter = 0
+				self.carret_blinking_state_manager = False
+			else:
+				self.carret.set_alpha(255)
+			self.carret_counter += 1
+			surface.blit(
+				self.text_rect, (
+					self.pos[0] + (self.carret.dimensions[0] + (self.carret.dimensions[0] / 2)), 
+					self.pos[1] + (self.half_h - self.half_text_h), 
+					self.dimensions[0], 
+					self.dimensions[1]
+				)
+			)
