@@ -71,6 +71,9 @@ class Text:
 
 class Grid:
 
-	def __init__(self, grid_size, cell_size):
+	def __init__(self, grid_size, reference_size):
 		self.grid_size = grid_size
-		self.cell_size = cell_size
+		self.cell_size = [
+			int(reference_size[0] / self.grid_size[0]),
+			int(reference_size[1] / self.grid_size[1])
+		]

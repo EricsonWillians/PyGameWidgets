@@ -17,20 +17,15 @@ FPS = 60
 running = True
 
 if __name__ == "__main__":	
-	panel = widgets.Panel(core.Grid((3, 7), (int(WINDOW_WIDTH / 3), int(WINDOW_HEIGHT / 1))), None, None, (0, 0))
+	panel = widgets.Panel(core.Grid((3, 15), (WINDOW_WIDTH, WINDOW_HEIGHT)), None, None, (0, 0))
 	panel.set_color((155, 155, 155, 255))
-	midpanel = widgets.Panel(core.Grid((1, 7), (panel.grid.cell_size[0], int(WINDOW_HEIGHT / 7))), panel, (1, 0), None)
-	panel.set_color((55, 55, 55, 255))
-	button = widgets.TextButton(midpanel, (0, 0), core.Text("Button " + str(0), 32))
-	button.set_color((0, 100, 0, 150))
-	button.set_border((255, 0, 0, 255), 16)
+	text_input = widgets.TextInput(panel, (1, 5))
 
 	def redraw():
 		pygame.display.flip()
 		screen.fill((0, 0, 0))
 		panel.draw(screen)
-		midpanel.draw(screen)
-		button.draw(screen)
+		text_input.draw(screen)
 
 while (running):
     clock.tick(FPS)
@@ -38,5 +33,3 @@ while (running):
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             sys.exit()
-        button.on_click(e, lambda: button.set_text("Pressed."))
-        button.on_release(e, lambda: button.set_text("Released"))

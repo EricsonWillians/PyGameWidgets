@@ -18,18 +18,15 @@ FPS = 60
 running = True
 
 if __name__ == "__main__":	
-    panel = widgets.Panel(core.Grid((3, 7), (int(WINDOW_WIDTH / 3), int(WINDOW_HEIGHT / 1))), None, None, (0, 0))
-    panel.set_color((155, 155, 155, 255))
-    midpanel = widgets.Panel(core.Grid((1, 7), (panel.grid.cell_size[0], int(WINDOW_HEIGHT / 7))), panel, (1, 0), None)
-    panel.set_color((55, 55, 55, 255))
-    buttons = [widgets.TextButton(midpanel, (0, n), core.Text("Button " + str(n), 32)) for n in range(7)]
+        panel = widgets.Panel(core.Grid((3, 7), (WINDOW_WIDTH, WINDOW_HEIGHT)), None, None, (0, 0))
+        panel.set_color((100, 100, 100, 255))
+    buttons = [widgets.TextButton(panel, (1, n), core.Text("Button " + str(n), 32)) for n in range(7)]
     [x.set_image("gfx/bg1.bmp") for x in buttons]
 
     def redraw():
         pygame.display.flip()
         screen.fill((0, 0, 0))
         panel.draw(screen)
-        midpanel.draw(screen)
         [x.draw(screen) for x in buttons]
 
 while (running):

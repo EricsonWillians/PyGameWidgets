@@ -9,18 +9,24 @@ class Component:
 		self.parent = parent
 		self.parent_x_positions = [0]
 		self.parent_y_positions = [0]
+
+	def get_width(self):
+		return self.dimensions[0]
+
+	def get_height(self):
+		return self.dimensions[1]
 		
 class Widget(Component):
 	
 	def __init__(self, pos, dimensions, parent=None):
 		Component.__init__(self, pos, dimensions, parent)
-		
+
 class RectWidget(Widget):
 	
 	def __init__(self, pos, dimensions, parent=None):
 		Component.__init__(self, pos, dimensions, parent)
-		self.color = (0, 0, 0, 0)
-		self.width = core.FILLED
+		self.color = (0, 0, 0, 255) # Default color is black.
+		self.width = core.FILLED # By default the rect widget is "solid".
 		self.pos = pos
 		self.dimensions = dimensions
 		self.rect = None
@@ -117,6 +123,12 @@ class Panel(RectWidget):
 		RectWidget.__init__(self, self.pos, self.dimensions)
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions, self.width)
 
+	def get_cell_width(self):
+		return self.grid.cell_size[0]
+
+	def get_cell_height(self):
+		return self.grid.cell_size[1]
+
 class PanelSpecific(RectWidget):
 	
 	def __init__(self, parent, position_in_grid):
@@ -128,10 +140,15 @@ class PanelSpecific(RectWidget):
 		]
 		self.x_positions = [x for x in range(0, self.parent.dimensions[0], self.dimensions[0])]
 		self.y_positions = [x for x in range(0, self.parent.dimensions[1], self.dimensions[1])]
-		self.pos = [
-			self.x_positions[self.position_in_grid[0]] + self.parent.pos[0],
-			self.y_positions[self.position_in_grid[1]] + self.parent.pos[1]
-		]
+		try:
+			self.pos = [
+				self.x_positions[self.position_in_grid[0]] + self.parent.pos[0],
+				self.y_positions[self.position_in_grid[1]] + self.parent.pos[1]
+			]
+		except IndexError as e:
+			raise Exception(
+				"The parent component's grid does not have such position: {error}.".format(error=str(self.position_in_grid))
+			)
 		RectWidget.__init__(self, self.pos, self.dimensions, self.parent)
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
 
@@ -197,8 +214,8 @@ class TextButton(RectButton):
 			(self.pos[0] + (self.half_w - self.half_text_w), self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
 		)
 
-class TextInput(RectWidget):
-	
+class TextInput(PanelSpecific):
+
 	def __init__(self, parent, position_in_grid):
-		pass
+		PanelSpecific.__init__(self, parent, position_in_grid)
 		
