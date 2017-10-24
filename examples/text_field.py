@@ -4,7 +4,7 @@ import pygame
 from PyGameWidgets import core
 from PyGameWidgets import widgets
 
-# Widget border example.
+# Text field example.
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 728
