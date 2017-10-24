@@ -1,8 +1,8 @@
 import sys
 sys.path.append("..")
 import pygame
-from PyCliche import core
-from PyCliche import widgets
+from PyGame-Widgets import core
+from PyGame-Widgets import widgets
 
 # Widget border example.
 

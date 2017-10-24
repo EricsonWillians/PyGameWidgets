@@ -1,5 +1,5 @@
 import pygame
-from PyCliche import core
+from PyGame-Widgets import core
 
 class Component:
 

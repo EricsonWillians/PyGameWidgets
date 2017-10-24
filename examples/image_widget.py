@@ -2,8 +2,8 @@ import sys
 sys.path.append("..")
 import os
 import pygame
-from PyCliche import core
-from PyCliche import widgets
+from PyGame-Widgets import core
+from PyGame-Widgets import widgets
 
 # Image widget example.
 
