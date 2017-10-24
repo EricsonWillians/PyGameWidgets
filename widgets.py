@@ -302,7 +302,20 @@ class TextField(PanelSpecific):
 						elif key_name == "left shift" or key_name == "right shift":
 							self.mods["shift"] = True
 						else:
-							self.value.append(key_name.upper() if self.mods["shift"] or core.get_capslock_state() else key_name.lower()) if key_name.isalnum() else []
+							# Check for special
+							if key_name.isalnum():
+								cross_r = (
+									[str(n) for n in range(0, 10)],
+									['!', '@', '#', '$', '%', '¨', '&', '*', '(', ')']
+								)
+								if self.mods["shift"] or core.get_capslock_state():
+									if key_name in cross_r[0]:
+										for c in cross_r[0]:
+											if key_name == c: 
+												key_name = cross_r[1][cross_r[0].index(c)-1]
+									else:
+										key_name = key_name.upper()
+							self.value.append(key_name)
 				self.set_text(''.join(self.value), self.text_size)
 				self.carret_x = self.pos[0] + self.text_rect.get_rect().width + core.DEFAULT_TEXT_SPACING if self.value else self.pos[0] + self.text_rect.get_rect().width
 				self.set_carret(
