@@ -19,7 +19,7 @@ running = True
 if __name__ == "__main__":	
 	panel = widgets.Panel(core.Grid((3, 7), (WINDOW_WIDTH, WINDOW_HEIGHT)), None, None, (0, 0))
 	panel.set_color((55, 55, 55, 255))
-	midpanel = widgets.Panel(core.Grid((1, 1), (panel.get_cell_width(), panel.get_cell_height())), panel, (1, 0), None)
+	midpanel = widgets.Panel(core.Grid((1, 1), (panel.get_cell_width(), panel.get_cell_height())), panel, (1, 1), None)
 	midpanel.set_color((0, 0, 0, 255))
 	midpanel.set_span((0, 6))
 	button = widgets.TextButton(midpanel, (0, 0), core.Text("Button " + str(0), 32))
@@ -39,5 +39,5 @@ while (running):
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             sys.exit()
-        button.on_click(e, lambda: button.set_text("Pressed."))
-        button.on_release(e, lambda: button.set_text("Released"))
+        button.on_click(e, lambda: button.set_text(core.Text("Pressed.")))
+        button.on_release(e, lambda: button.set_text(core.Text("Released.")))

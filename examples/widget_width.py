@@ -35,5 +35,5 @@ while (running):
 	for e in pygame.event.get():
 		if e.type == pygame.QUIT:
 			sys.exit()
-		[x.on_click(e, lambda: x.set_text("Pressed.")) for x in buttons]
-		[x.on_release(e, lambda: x.set_text("Released")) for x in buttons]
+		[x.on_click(e, lambda: x.set_text(core.Text("Pressed."))) for x in buttons]
+		[x.on_release(e, lambda: x.set_text(core.Text("Released."))) for x in buttons]

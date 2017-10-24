@@ -48,7 +48,7 @@ while (running):
         [x.on_release(e, lambda: x.set_text(core.Text("Released."))) for x in buttons]
 ```
 
-![Multiple Image Buttons](https://ibb.co/bXiL1R)
+![Multiple Image Buttons](https://image.ibb.co/mAQYMR/Image_Buttons.png)
 
 And here's an example of a TextField object:
 
@@ -84,7 +84,30 @@ while (running):
 		text_input.register(e)
 ```
 
-![Text Field](https://ibb.co/eBS8o6)
+![Text Field](https://image.ibb.co/hX4A1R/Text_Input.png)
+
+PyGameWidgets uses a grid-based layout manager that allows the development of visual complexity through nesting. There's only one container object ([Panel](https://github.com/EricsonWillians/PyGameWidgets/blob/master/widgets.py#L92)), and all widgets fit inside given a grid configuration:
+
+```
+panel = widgets.Panel(core.Grid((3, 7), (WINDOW_WIDTH, WINDOW_HEIGHT)), None, None, (0, 0))
+panel.set_color((55, 55, 55, 255))
+button = widgets.ToggleButton(panel, (1, 5)) # Here <<
+```
+
+The sequence `(1, 5)` means: Second column, sixth row (Starting from zero).  The parent container in this example has a size of 3 columns and 7 rows (`(3, 7)`). Be careful to not confuse yourself with the grid positions, starting always from 0 and defining the size always from 1. 
+
+It's possible to nest panel containers as in this example:
+
+```
+panel = widgets.Panel(core.Grid((3, 7), (WINDOW_WIDTH, WINDOW_HEIGHT)), None, None, (0, 0))
+panel.set_color((55, 55, 55, 255))
+midpanel = widgets.Panel(core.Grid((1, 1), (panel.get_cell_width(), panel.get_cell_height())), panel, (1, 1), None)
+midpanel.set_color((0, 0, 0, 255))
+midpanel.set_span((0, 6))
+button = widgets.TextButton(midpanel, (0, 0), core.Text("Button " + str(0), 32))
+button.set_color((0, 100, 0, 255))
+button.set_border((255, 0, 0, 255), 16)
+```
 
 ### Prerequisites
 
