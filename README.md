@@ -48,7 +48,7 @@ while (running):
         [x.on_release(e, lambda: x.set_text(core.Text("Released."))) for x in buttons]
 ```
 
-![Multiple Image Buttons](https://ibb.co/bXiL1R)
+![Multiple Image Buttons](https://image.ibb.co/mAQYMR/Image_Buttons.png)
 
 And here's an example of a TextField object:
 
@@ -84,7 +84,7 @@ while (running):
 		text_input.register(e)
 ```
 
-![Text Field](https://ibb.co/eBS8o6)
+![Text Field](https://image.ibb.co/hX4A1R/Text_Input.png)
 
 ### Prerequisites
 
