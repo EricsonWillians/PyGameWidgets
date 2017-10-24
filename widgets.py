@@ -133,22 +133,26 @@ class PanelSpecific(RectWidget):
 	
 	def __init__(self, parent, position_in_grid):
 		self.parent = parent
-		self.position_in_grid = position_in_grid
-		self.dimensions = [
-			self.parent.grid.cell_size[0], 
-			self.parent.grid.cell_size[1]
-		]
-		self.x_positions = [x for x in range(0, self.parent.dimensions[0], self.dimensions[0])]
-		self.y_positions = [x for x in range(0, self.parent.dimensions[1], self.dimensions[1])]
-		try:
-			self.pos = [
-				self.x_positions[self.position_in_grid[0]] + self.parent.pos[0],
-				self.y_positions[self.position_in_grid[1]] + self.parent.pos[1]
+		if self.parent:
+			self.position_in_grid = position_in_grid
+			self.dimensions = [
+				self.parent.grid.cell_size[0], 
+				self.parent.grid.cell_size[1]
 			]
-		except IndexError as e:
-			raise Exception(
-				"The parent component's grid does not have such position: {error}.".format(error=str(self.position_in_grid))
-			)
+			self.x_positions = [x for x in range(0, self.parent.dimensions[0], self.dimensions[0])]
+			self.y_positions = [x for x in range(0, self.parent.dimensions[1], self.dimensions[1])]
+			try:
+				self.pos = [
+					self.x_positions[self.position_in_grid[0]] + self.parent.pos[0],
+					self.y_positions[self.position_in_grid[1]] + self.parent.pos[1]
+				]
+			except IndexError as e:
+				raise Exception(
+					"The parent component's grid does not have such position: {error}.".format(error=str(self.position_in_grid))
+				)
+		else:
+			self.pos = (0, 0)
+			self.dimensions = (0, 0)
 		RectWidget.__init__(self, self.pos, self.dimensions, self.parent)
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
 
@@ -162,11 +166,18 @@ class TextLabel(PanelSpecific):
 	def set_text(self, new_text):
 		self.half_w = self.dimensions[0] / 2
 		self.half_h = self.dimensions[1] / 2
-		self.text_rect = self.text.font.render(
-			new_text.value, 
-			1, 
-			new_text.color
-		)
+		if isinstance(new_text, str):
+			self.text_rect = core.Text(new_text).font.render(
+				new_text, 
+				1, 
+				core.WHITE
+			)
+		else:
+			self.text_rect = self.text.font.render(
+				new_text.value, 
+				1, 
+				new_text.color
+			)
 		self.half_text_w = self.text_rect.get_rect().width / 2
 		self.half_text_h = self.text_rect.get_rect().height / 2
 
