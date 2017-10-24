@@ -1,5 +1,5 @@
 import pygame
-from PyGame-Widgets import core
+from PyGameWidgets import core
 
 class Component:
 

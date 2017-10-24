@@ -1,4 +1,4 @@
-# PyGame-Widgets
+# PyGameWidgets
 
 A straightforward widget toolkit for [Pygame](https://www.pygame.org).
 
