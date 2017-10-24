@@ -137,6 +137,8 @@ YELLOW =  (255, 255, 0, 255)
 
 It's important to remember that all color sequences must be in RGBA format. Alpha transparency is available by default in all pygame surfaces.
 
+Check out each example and be sure to follow the repository for new components.
+
 ### Prerequisites
 
 Pygame and Python3 are the only prerequisites. 
