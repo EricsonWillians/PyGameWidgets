@@ -19,8 +19,8 @@ running = True
 if __name__ == "__main__":	
 	panel = widgets.Panel(core.Grid((3, 20), (WINDOW_WIDTH, WINDOW_HEIGHT)), None, None, (0, 0))
 	panel.set_color((155, 155, 155, 255))
-	text_input = widgets.TextInput(panel, (1, 5))
-	# text_input.set_border(core.WHITE, 3)
+	text_input = widgets.TextField(panel, (1, 5))
+	text_input.set_border(core.WHITE, 3)
 
 	def redraw():
 		pygame.display.flip()

@@ -214,12 +214,12 @@ class TextButton(RectButton):
 			(self.pos[0] + (self.half_w - self.half_text_w), self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
 		)
 
-class TextInput(PanelSpecific):
+class TextField(PanelSpecific):
 
 	def __init__(self, parent, position_in_grid):
 		PanelSpecific.__init__(self, parent, position_in_grid)
 		self.focused = False
-		self.set_text("", 16)
+		self.set_text("", core.DEFAULT_FONT_SIZE)
 		self.value = []
 		self.set_carret(
 			core.WHITE, 
@@ -269,6 +269,9 @@ class TextInput(PanelSpecific):
 		self.half_text_w = self.text_rect.get_rect().width / 2
 		self.half_text_h = self.text_rect.get_rect().height / 2
 
+	def get_value(self):
+		return ''.join(self.value)
+
 	def register(self, event):
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			if event.button == 1:
@@ -278,8 +281,27 @@ class TextInput(PanelSpecific):
 					self.focused = False
 		if event.type == pygame.KEYDOWN:
 			if self.focused:
-				self.value.append(pygame.key.name(event.key))
+				key_name = pygame.key.name(event.key)
+				# Backward operations:
+				if key_name == "backspace":
+					self.value.pop() if self.value else []
+				elif key_name == "delete":
+					self.value.clear()
+				# Foward operations:
+				else:
+					if self.text_rect.get_rect().width < self.dimensions[0]:
+						if key_name == "space":
+							self.value.append(' ')
+						else:
+							self.value.append(key_name) if key_name.isalnum() else []
 				self.set_text(''.join(self.value), self.text_size)
+				self.carret_x = self.pos[0] + self.text_rect.get_rect().width + core.DEFAULT_TEXT_SPACING if self.value else self.pos[0] + self.text_rect.get_rect().width
+				self.set_carret(
+						self.carret_color,
+						[self.carret_x, self.carret.pos[1]],
+						self.carret_dimensions,
+						self.carret_width
+					)
 
 	def draw(self, surface):
 		self.rect.draw(surface)
@@ -298,7 +320,7 @@ class TextInput(PanelSpecific):
 			self.carret_counter += 1
 			surface.blit(
 				self.text_rect, (
-					self.pos[0] + (self.carret.dimensions[0] + (self.carret.dimensions[0] / 2)), 
+					self.border.dimensions[0] + core.DEFAULT_TEXT_SPACING if self.border else self.pos[0] + core.DEFAULT_TEXT_SPACING, 
 					self.pos[1] + (self.half_h - self.half_text_h), 
 					self.dimensions[0], 
 					self.dimensions[1]
