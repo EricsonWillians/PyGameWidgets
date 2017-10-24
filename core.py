@@ -1,5 +1,9 @@
 import pygame
 import math
+import os
+import platform
+import subprocess
+import ctypes
 
 # COLORS
 
@@ -51,6 +55,21 @@ DEFAULT_WIDTH = 16
 
 DEFAULT_FONT_SIZE = 18
 DEFAULT_TEXT_SPACING = 3
+def get_capslock_state():
+	state = False
+	if platform.system() == "Windows":
+		hllDll = ctypes.WinDLL ("User32.dll")
+		VK_CAPITAL = 0x14
+		if hllDll.GetKeyState(VK_CAPITAL):
+			state = True
+		else:
+			state = False
+	else:
+		if subprocess.check_output('xset q | grep LED', shell=True)[65] == 50 :
+			state = False
+		if subprocess.check_output('xset q | grep LED', shell=True)[65] == 51 :
+			state = True
+	return state
 
 class Shape(pygame.Surface):
 	

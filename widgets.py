@@ -227,6 +227,13 @@ class TextField(PanelSpecific):
 			[self.dimensions[0] / (self.parent.get_cell_width() / self.text.size), self.dimensions[1]], 
 			core.FILLED
 		)
+		self.mods = {
+			"shift": False,
+			"left control": False,
+			"left alt": False,
+			"right alt": False,
+			"right control": False
+		}
 
 	def set_carret(self, color, pos, dimensions, width):
 		self.carret_color = color
@@ -289,11 +296,13 @@ class TextField(PanelSpecific):
 					self.value.clear()
 				# Foward operations:
 				else:
-					if self.text_rect.get_rect().width < self.dimensions[0]:
+					if self.text_rect.get_rect().width + self.carret_dimensions[0] < self.border.dimensions[0] + core.DEFAULT_TEXT_SPACING if self.border else self.dimensions[0] + core.DEFAULT_TEXT_SPACING :
 						if key_name == "space":
 							self.value.append(' ')
+						elif key_name == "left shift" or key_name == "right shift":
+							self.mods["shift"] = True
 						else:
-							self.value.append(key_name) if key_name.isalnum() else []
+							self.value.append(key_name.upper() if self.mods["shift"] or core.get_capslock_state() else key_name.lower()) if key_name.isalnum() else []
 				self.set_text(''.join(self.value), self.text_size)
 				self.carret_x = self.pos[0] + self.text_rect.get_rect().width + core.DEFAULT_TEXT_SPACING if self.value else self.pos[0] + self.text_rect.get_rect().width
 				self.set_carret(
@@ -302,6 +311,10 @@ class TextField(PanelSpecific):
 						self.carret_dimensions,
 						self.carret_width
 					)
+		elif event.type == pygame.KEYUP:
+			key_name = pygame.key.name(event.key)
+			if key_name == "left shift" or key_name == "right shift":
+				self.mods["shift"] = False
 
 	def draw(self, surface):
 		self.rect.draw(surface)
