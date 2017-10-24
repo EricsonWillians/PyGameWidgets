@@ -152,6 +152,33 @@ class PanelSpecific(RectWidget):
 		RectWidget.__init__(self, self.pos, self.dimensions, self.parent)
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions)
 
+class TextLabel(PanelSpecific):
+
+	def __init__(self, parent, position_in_grid, text):
+		PanelSpecific.__init__(self, parent, position_in_grid)
+		self.text = text
+		self.set_text(text)
+		
+	def set_text(self, new_text):
+		self.half_w = self.dimensions[0] / 2
+		self.half_h = self.dimensions[1] / 2
+		self.text_rect = self.text.font.render(
+			new_text.value, 
+			1, 
+			new_text.color
+		)
+		self.half_text_w = self.text_rect.get_rect().width / 2
+		self.half_text_h = self.text_rect.get_rect().height / 2
+
+	def draw(self, surface):
+		self.rect.draw(surface)
+		if hasattr(self, "border"): self.border.draw(surface)
+		if hasattr(self, "image"): self.draw_image(surface)
+		surface.blit(
+			self.text_rect, 
+			(self.pos[0] + (self.half_w - self.half_text_w), self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
+		)
+
 class RectButton(PanelSpecific):
 
 	def __init__(self, parent, position_in_grid):
@@ -181,38 +208,11 @@ class RectButton(PanelSpecific):
 				if self.rect.R.collidepoint(event.pos):
 					function(*args) if args else function()
 
-class TextButton(RectButton):
+class TextButton(TextLabel, RectButton):
 
 	def __init__(self, parent, position_in_grid, text):
+		TextLabel.__init__(self, parent, position_in_grid, text)
 		RectButton.__init__(self, parent, position_in_grid)
-		self.text = text
-		self.set_text(text.value)
-		
-	def set_text(self, new_text):
-		self.half_w = self.dimensions[0] / 2
-		self.half_h = self.dimensions[1] / 2
-		self.text_rect = self.text.font.render(
-			self.text.value, 
-			1, 
-			self.text.color
-		)
-		self.half_text_w = self.text_rect.get_rect().width / 2
-		self.half_text_h = self.text_rect.get_rect().height / 2
-		self.text.value = new_text
-		self.text_rect = self.text.font.render(
-			self.text.value, 
-			1, 
-			self.text.color
-		)
-
-	def draw(self, surface):
-		self.rect.draw(surface)
-		if hasattr(self, "border"): self.border.draw(surface)
-		if hasattr(self, "image"): self.draw_image(surface)
-		surface.blit(
-			self.text_rect, 
-			(self.pos[0] + (self.half_w - self.half_text_w), self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
-		)
 
 class TextField(PanelSpecific):
 
