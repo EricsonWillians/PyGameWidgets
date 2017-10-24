@@ -54,7 +54,7 @@ class RectWidget(Widget):
 			self.span_h
 		]
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions, self.width)
-		if hasattr(self, "text"): self.set_text(self.text.value)
+		# if hasattr(self, "text"): self.set_text(self.text.value)
 
 	def set_image(self, path):
 		self.image = pygame.transform.scale(
@@ -308,7 +308,7 @@ class TextField(PanelSpecific):
 				self.set_carret(
 						self.carret_color,
 						[self.carret_x, self.carret.pos[1]],
-						self.carret_dimensions,
+						[self.dimensions[0] / (self.parent.get_cell_width() / self.text.size), self.dimensions[1]],
 						self.carret_width
 					)
 		elif event.type == pygame.KEYUP:
