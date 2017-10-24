@@ -85,6 +85,7 @@ while (running):
 ```
 
 ![Text Field](https://image.ibb.co/hX4A1R/Text_Input.png)
+<<<<<<< HEAD
 
 PyGameWidgets uses a grid-based layout manager that allows the development of visual complexity through nesting. There's only one container object ([Panel](https://github.com/EricsonWillians/PyGameWidgets/blob/master/widgets.py#L92)), and all widgets fit inside given a grid configuration:
 
@@ -108,6 +109,8 @@ button = widgets.TextButton(midpanel, (0, 0), core.Text("Button " + str(0), 32))
 button.set_color((0, 100, 0, 255))
 button.set_border((255, 0, 0, 255), 16)
 ```
+=======
+>>>>>>> 581be8160336585ae381b23191ca26e3fe3584a9
 
 ### Prerequisites
 
