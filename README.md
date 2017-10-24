@@ -1,6 +1,6 @@
 # PyGame-Widgets
 
-A straight-foward widget toolkit for [Pygame](https://www.pygame.org).
+A straightforward widget toolkit for [Pygame](https://www.pygame.org).
 
 ## Getting Started
 
