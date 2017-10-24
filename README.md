@@ -1,4 +1,4 @@
-# PyGameWidgets
+# PyGameWidgets 1.00
 
 A straightforward widget toolkit for [Pygame](https://www.pygame.org).
 
@@ -85,7 +85,6 @@ while (running):
 ```
 
 ![Text Field](https://image.ibb.co/hX4A1R/Text_Input.png)
-<<<<<<< HEAD
 
 PyGameWidgets uses a grid-based layout manager that allows the development of visual complexity through nesting. There's only one container object ([Panel](https://github.com/EricsonWillians/PyGameWidgets/blob/master/widgets.py#L92)), and all widgets fit inside given a grid configuration:
 
@@ -109,8 +108,34 @@ button = widgets.TextButton(midpanel, (0, 0), core.Text("Button " + str(0), 32))
 button.set_color((0, 100, 0, 255))
 button.set_border((255, 0, 0, 255), 16)
 ```
-=======
->>>>>>> 581be8160336585ae381b23191ca26e3fe3584a9
+
+![Panel Span and Nesting](https://image.ibb.co/k40xFm/Span_and_nesting.png)
+
+As you may have noticed in this example, it's also possible to span components. The first panel has a grid size of `(3, 7)`, and then the second panel has a size of `(1, 1)`, but it's positioned in `(1, 1)` of the first panel (Second column, second row). The span of the second panel (`(0, 6)`) fills the remaining rows. The purpose of this example is to show how nesting and span can be combined to create greater visual complexity.
+
+The core module provides an array of standard colors that be used in any component for border, background and font colors:
+
+```
+AQUA = (0, 255, 255, 255)
+BLACK = (0, 0, 0, 255)
+BLUE = (0, 0, 255, 255)
+CORNFLOWER_BLUE = (100, 149, 237, 255)
+FUCHSIA =  (255, 0, 255, 255)
+GRAY = (128, 128, 128, 255)
+GREEN = (0, 128, 0, 255)
+LIME = (0, 255, 0, 255)
+MAROON = (128, 0, 0, 255)
+NAVY_BLUE = (0, 0, 128, 255)
+OLIVE = (128, 128, 0, 255)
+PURPLE = (128, 0, 128, 255)
+RED =  (255, 0, 0, 255)
+SILVER = (192, 192, 192, 255)
+TEAL = (0, 128, 128, 255)
+WHITE =  (255, 255, 255, 255)
+YELLOW =  (255, 255, 0, 255)
+```
+
+It's important to remember that all color sequences must be in RGBA format. Alpha transparency is available by default in all pygame surfaces.
 
 ### Prerequisites
 
