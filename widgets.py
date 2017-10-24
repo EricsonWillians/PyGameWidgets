@@ -352,3 +352,42 @@ class TextField(PanelSpecific):
 					self.dimensions[1]
 				)
 			)
+
+class ToggleButton(RectButton):
+
+	def __init__(self, parent, position_in_grid):
+		RectButton.__init__(self, parent, position_in_grid)
+		self.state = False
+		self.on = RectWidget(self.pos, self.dimensions, self.parent)
+		self.off = RectWidget(self.pos, self.dimensions, self.parent)
+		self.on.set_color(core.GREEN)
+		self.off.set_color(core.RED)
+		self.visual_states = [
+			self.on,
+			self.off
+		]
+
+	def set_state(self, state):
+		self.state = state
+
+	def toggle(self, e):
+		self.on_click(e, 
+			lambda: self.set_state(True) if not self.state else self.set_state(False)
+		)
+
+	def set_visual_states(self, visual_states):
+		self.visual_states = visual_states
+
+	def set_on(self, on):
+		self.visual_states[0] = on
+
+	def set_on(self, off):
+		self.visual_states[1] = off
+
+	def draw(self, surface):
+		self.rect.draw(surface)
+		if hasattr(self, "border"): self.border.draw(surface)
+		if self.state:
+			self.visual_states[0].draw(surface)
+		else:
+			self.visual_states[1].draw(surface)
