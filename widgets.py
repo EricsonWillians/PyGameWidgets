@@ -319,11 +319,11 @@ class TextField(PanelSpecific):
 				self.set_text(''.join(self.value), self.text_size)
 				self.carret_x = self.pos[0] + self.text_rect.get_rect().width + core.DEFAULT_TEXT_SPACING if self.value else self.pos[0] + self.text_rect.get_rect().width
 				self.set_carret(
-						self.carret_color,
-						[self.carret_x, self.carret.pos[1]],
-						[self.dimensions[0] / (self.parent.get_cell_width() / self.text.size), self.dimensions[1]],
-						self.carret_width
-					)
+					self.carret_color,
+					[self.carret_x, self.carret.pos[1]],
+					[self.dimensions[0] / (self.parent.get_cell_width() / self.text.size), self.dimensions[1]],
+					self.carret_width
+				)
 		elif event.type == pygame.KEYUP:
 			key_name = pygame.key.name(event.key)
 			if key_name == "left shift" or key_name == "right shift":
