@@ -326,7 +326,7 @@ class TextField(PanelSpecific):
 												key_name = cross_r[1][cross_r[0].index(c)-1]
 									else:
 										key_name = key_name.upper()
-							self.value.append(key_name)
+								self.value.append(key_name)
 				self.set_text(''.join(self.value), self.text_size)
 				self.carret_x = self.pos[0] + self.text_rect.get_rect().width + core.DEFAULT_TEXT_SPACING if self.value else self.pos[0] + self.text_rect.get_rect().width
 				self.set_carret(
