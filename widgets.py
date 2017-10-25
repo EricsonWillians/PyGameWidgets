@@ -54,7 +54,7 @@ class RectWidget(Widget):
 			self.span_h
 		]
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions, self.width)
-		# if hasattr(self, "text"): self.set_text(self.text.value)
+		if hasattr(self, "text"): self.set_text(self.text.value)
 
 	def set_image(self, path):
 		self.image = pygame.transform.scale(
