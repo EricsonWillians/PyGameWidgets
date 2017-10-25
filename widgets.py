@@ -62,8 +62,8 @@ class RectWidget(Widget):
 			(self.dimensions[0], self.dimensions[1])
 		)
 
-	def set_border(self, color, width):
-		if width == 0: raise Exception("Border width cannot be 0.")
+	def set_border(self, color, width=8):
+		if width == 0: raise Exception("Border width cannot be 0, otherwise it will eclipse the underlying rect.")
 		border_dimensions = [
 			self.dimensions[0] + (width * 2),
 			self.dimensions[1] + (width * 2)
