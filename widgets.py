@@ -54,7 +54,7 @@ class RectWidget(Widget):
 			self.span_h
 		]
 		self.rect = core.Rectangle(self.color, self.pos, self.dimensions, self.width)
-		if hasattr(self, "text"): self.set_text(self.text.value)
+		if hasattr(self, "text"): self.set_text(self.text)
 
 	def set_image(self, path):
 		self.image = pygame.transform.scale(
@@ -160,23 +160,24 @@ class TextLabel(PanelSpecific):
 
 	def __init__(self, parent, position_in_grid, text):
 		PanelSpecific.__init__(self, parent, position_in_grid)
-		self.text = text
 		self.set_text(text)
 		
 	def set_text(self, new_text):
 		self.half_w = self.dimensions[0] / 2
 		self.half_h = self.dimensions[1] / 2
 		if isinstance(new_text, str):
-			self.text_rect = core.Text(new_text).font.render(
-				new_text, 
+			self.text = core.Text(new_text)
+			self.text_rect = self.text.font.render(
+				self.text.value, 
 				1, 
 				core.WHITE
 			)
 		else:
+			self.text = new_text
 			self.text_rect = self.text.font.render(
-				new_text.value, 
+				self.text.value, 
 				1, 
-				new_text.color
+				self.text.color
 			)
 		self.half_text_w = self.text_rect.get_rect().width / 2
 		self.half_text_h = self.text_rect.get_rect().height / 2

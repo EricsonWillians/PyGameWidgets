@@ -131,9 +131,10 @@ class SysFont(Shape):
 class Text:
 	
 	def __init__(self, value, size=32, color=[255, 255, 255, 255], font_name="monospace", bold=False, italic=False):
+		print(italic)
 		self.value = value
-		self.color = color
 		self.size = size
+		self.color = color
 		self.font_name = font_name
 		self.bold = bold
 		self.italic = italic
