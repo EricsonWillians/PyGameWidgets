@@ -403,3 +403,78 @@ class ToggleButton(RectButton):
 			self.visual_states[0].draw(surface)
 		else:
 			self.visual_states[1].draw(surface)
+
+class OptionChooser(PanelSpecific):
+
+	def __init__(self, parent, position_in_grid, values=[]):
+		PanelSpecific.__init__(self, parent, position_in_grid)
+		self.panel = Panel(
+			core.Grid((6, 1), 
+			(parent.get_cell_width(), parent.get_cell_height())), 
+			None, 
+			None, 
+			(parent.x_positions[position_in_grid[0]], parent.y_positions[position_in_grid[1]])
+		)
+		self.panel.set_color(core.TRANSPARENT)
+		self.previous_button = RectButton(self.panel, (0, 0))
+		self.previous_button.set_color(core.TRANSPARENT)
+		self.previous_button.set_image("gfx/gray_arrow_0.png")
+		self.values = values
+		self.index = 0
+		if (self.values):
+			self.current_value = self.values[self.index]
+		else:
+			self.current_value = "Undefined"
+		self.text_size = 32
+		self.text_color = core.WHITE
+		self.font_name = "monospace"
+		self.bold = False
+		self.italic = False
+		self.label = TextLabel(self.panel, (0, 0), core.Text(self.current_value))
+		self.label.set_span((5, 0))
+		self.label.set_color(core.TRANSPARENT)
+		self.forward_button = RectButton(self.panel, (5, 0))
+		self.forward_button.set_color(core.TRANSPARENT)
+		self.forward_button.set_image("gfx/gray_arrow_1.png")
+		
+
+	def update_text(self):
+		self.text = core.Text(
+			self.current_value,
+			self.text_size,
+			self.text_color,
+			self.font_name,
+			self.bold,
+			self.italic
+		)
+		self.label.set_text(self.text)
+
+	def previous(self):
+		if self.values:
+			if self.index == 0:
+				self.index = len(self.values)-1
+			else:
+				self.index -= 1
+			self.current_value = self.values[self.index]
+			self.update_text()
+
+	def forward(self):
+		if self.values:
+			if self.index == len(self.values)-1:
+				self.index = 0
+			else:
+				self.index += 1
+			self.current_value = self.values[self.index]
+			self.update_text()
+
+	def activate(self, e):
+		self.previous_button.on_click(e, lambda: self.previous())
+		self.forward_button.on_click(e, lambda: self.forward())
+
+	def draw(self, surface):
+		if hasattr(self, "image"): self.draw_image(surface)
+		if hasattr(self, "border"): self.border.draw(surface)
+		self.panel.draw(surface)
+		self.label.draw(surface)
+		self.previous_button.draw(surface)
+		self.forward_button.draw(surface)

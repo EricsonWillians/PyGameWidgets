@@ -139,6 +139,17 @@ It's important to remember that all color sequences must be in RGBA format. Alph
 
 Check out each example and be sure to follow the repository for new components.
 
+## Current Widgets
+
+* RectWidget
+* Panel
+* TextLabel
+* RectButton
+* TextButton
+* TextField
+* ToggleButton
+* OptionChooser
+
 ### Prerequisites
 
 Pygame and Python3 are the only prerequisites. 

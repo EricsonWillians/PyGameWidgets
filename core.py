@@ -23,7 +23,8 @@ RED =  (255, 0, 0, 255)
 SILVER = (192, 192, 192, 255)
 TEAL = (0, 128, 128, 255)
 WHITE =  (255, 255, 255, 255)
-YELLOW =  (255, 255, 0)
+YELLOW =  (255, 255, 0, 255)
+TRANSPARENT = (255, 255, 255, 0)
 
 COLORS = [
 	AQUA, 
@@ -130,8 +131,7 @@ class SysFont(Shape):
 
 class Text:
 	
-	def __init__(self, value, size=32, color=[255, 255, 255, 255], font_name="monospace", bold=False, italic=False):
-		print(italic)
+	def __init__(self, value, size=32, color=WHITE, font_name="monospace", bold=False, italic=False):
 		self.value = value
 		self.size = size
 		self.color = color
