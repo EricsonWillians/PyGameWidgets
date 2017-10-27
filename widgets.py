@@ -1,4 +1,5 @@
 import pygame
+import os
 from PyGameWidgets import core
 
 class Component:
@@ -418,7 +419,7 @@ class OptionChooser(PanelSpecific):
 		self.panel.set_color(core.TRANSPARENT)
 		self.previous_button = RectButton(self.panel, (0, 0))
 		self.previous_button.set_color(core.TRANSPARENT)
-		self.previous_button.set_image("gfx/gray_arrow_0.png")
+		self.previous_button.set_image(os.path.join(os.path.dirname(os.path.abspath(__file__)), "gfx/gray_arrow_0.png"))
 		self.values = values
 		self.index = 0
 		if (self.values):
@@ -435,7 +436,7 @@ class OptionChooser(PanelSpecific):
 		self.label.set_color(core.TRANSPARENT)
 		self.forward_button = RectButton(self.panel, (5, 0))
 		self.forward_button.set_color(core.TRANSPARENT)
-		self.forward_button.set_image("gfx/gray_arrow_1.png")
+		self.forward_button.set_image(os.path.join(os.path.dirname(os.path.abspath(__file__)), "gfx/gray_arrow_1.png"))
 		
 
 	def update_text(self):
