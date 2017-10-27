@@ -113,7 +113,7 @@ button.set_border((255, 0, 0, 255), 16)
 
 As you may have noticed in this example, it's also possible to span components. The first panel has a grid size of `(3, 7)`, and then the second panel has a size of `(1, 1)`, but it's positioned in `(1, 1)` of the first panel (Second column, second row). The span of the second panel (`(0, 6)`) fills the remaining rows. The purpose of this example is to show how nesting and span can be combined to create greater visual complexity.
 
-The core module provides an array of standard colors that be used in any component for border, background and font colors:
+The core module provides an array of standard colors that can be used in any component for border, background and font colors:
 
 ```
 AQUA = (0, 255, 255, 255)
