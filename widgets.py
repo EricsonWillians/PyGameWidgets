@@ -63,6 +63,10 @@ class RectWidget(Widget):
 			(self.dimensions[0], self.dimensions[1])
 		)
 
+	def set_image_dimensions(self, d):
+		if self.image:
+			self.image = pygame.transform.scale(self.image, d)
+
 	def set_border(self, color, width=8):
 		if width == 0: raise Exception("Border width cannot be 0, otherwise it will eclipse the underlying rect.")
 		border_dimensions = [
@@ -405,19 +409,13 @@ class ToggleButton(RectButton):
 		else:
 			self.visual_states[1].draw(surface)
 
-class OptionChooser(PanelSpecific):
+class OptionChooser(Panel):
 
 	def __init__(self, parent, position_in_grid, values=[]):
-		PanelSpecific.__init__(self, parent, position_in_grid)
-		self.panel = Panel(
-			core.Grid((6, 1), 
-			(parent.get_cell_width(), parent.get_cell_height())), 
-			None, 
-			None, 
-			(parent.x_positions[position_in_grid[0]], parent.y_positions[position_in_grid[1]])
-		)
-		self.panel.set_color(core.TRANSPARENT)
-		self.previous_button = RectButton(self.panel, (0, 0))
+		Panel.__init__(self, core.Grid((6, 1), (parent.get_cell_width(), parent.get_cell_height())), parent=parent, position_in_grid=position_in_grid, pos=None)
+		# self.set_color(core.TRANSPARENT)
+		
+		self.previous_button = RectButton(self, (0, 0))
 		self.previous_button.set_color(core.TRANSPARENT)
 		self.previous_button.set_image(os.path.join(os.path.dirname(os.path.abspath(__file__)), "gfx/gray_arrow_0.png"))
 		self.values = values
@@ -431,13 +429,12 @@ class OptionChooser(PanelSpecific):
 		self.font_name = "monospace"
 		self.bold = False
 		self.italic = False
-		self.label = TextLabel(self.panel, (0, 0), core.Text(self.current_value))
+		self.label = TextLabel(self, (0, 0), core.Text(self.current_value))
 		self.label.set_span((5, 0))
 		self.label.set_color(core.TRANSPARENT)
-		self.forward_button = RectButton(self.panel, (5, 0))
+		self.forward_button = RectButton(self, (5, 0))
 		self.forward_button.set_color(core.TRANSPARENT)
 		self.forward_button.set_image(os.path.join(os.path.dirname(os.path.abspath(__file__)), "gfx/gray_arrow_1.png"))
-		
 
 	def update_text(self):
 		self.text = core.Text(
@@ -472,10 +469,40 @@ class OptionChooser(PanelSpecific):
 		self.previous_button.on_click(e, lambda: self.previous())
 		self.forward_button.on_click(e, lambda: self.forward())
 
+	def set_span(self, span):
+		self.span = [span[0]+1, span[1]+1]
+		self.span_w = sum([self.dimensions[0] for w in range(self.span[0])])
+		self.span_h = sum([self.dimensions[1] for h in range(self.span[1])])
+		self.dimensions = [
+			self.span_w,
+			self.span_h
+		]
+		self.label.pos = [
+			self.pos[0] + ((self.span_w / 2) - (self.label.dimensions[0] / 2)),
+			self.pos[1] + ((self.span_h / 2) - (self.label.dimensions[1] / 2))
+		]
+		self.forward_button.pos = [
+			self.pos[0] + (self.span_w - self.forward_button.dimensions[0]),
+			self.pos[1]
+		]
+		if self.previous_button.image:
+			self.previous_button.set_image_dimensions((
+				self.previous_button.dimensions[0],
+				self.span_h
+			))
+		else:
+			self.previous_button.pos[1] = (self.span_h - self.previous_button.dimensions[1])
+		if self.forward_button.image:
+			self.forward_button.set_image_dimensions((
+				self.forward_button.dimensions[0],
+				self.span_h
+			))
+		else:
+			self.forward_button.pos[1] = (self.span_h - self.forward_button.dimensions[1])
+
 	def draw(self, surface):
 		if hasattr(self, "image"): self.draw_image(surface)
 		if hasattr(self, "border"): self.border.draw(surface)
-		self.panel.draw(surface)
 		self.label.draw(surface)
 		self.previous_button.draw(surface)
 		self.forward_button.draw(surface)

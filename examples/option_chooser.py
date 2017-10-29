@@ -19,7 +19,11 @@ running = True
 if __name__ == "__main__":	
 	panel = widgets.Panel(core.Grid((3, 20), (WINDOW_WIDTH, WINDOW_HEIGHT)), None, None, (0, 0))
 	panel.set_color((155, 155, 155, 255))
-	opt = widgets.OptionChooser(panel, (1, 5), ["Blue", "Orange", "Black", "White", "Red"])
+	opt = widgets.OptionChooser(panel, (0, 5), ["Blue", "Orange", "Black", "White", "Red"])
+	opt.set_span((2, 3))
+	opt.set_border(core.BLACK, 16)
+	opt.text_color = core.RED
+	opt.bold = True
 	opt.italic = True
 	opt.update_text()
 
