@@ -40,3 +40,4 @@ while (running):
 		if e.type == pygame.QUIT:
 			sys.exit()
 		opt.activate(e)
+		opt.on_change(e, lambda: print(opt.current_value))

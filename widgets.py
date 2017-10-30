@@ -66,6 +66,7 @@ class RectWidget(Widget):
 	def set_image_dimensions(self, d):
 		if self.image:
 			self.image = pygame.transform.scale(self.image, d)
+			self.rect = core.Rectangle(self.color, self.pos, [self.image.get_width(), self.image.get_height()], self.width)
 
 	def set_border(self, color, width=8):
 		if width == 0: raise Exception("Border width cannot be 0, otherwise it will eclipse the underlying rect.")
@@ -492,6 +493,8 @@ class OptionChooser(Panel):
 			))
 		else:
 			self.previous_button.pos[1] = (self.span_h - self.previous_button.dimensions[1])
+			self.previous_button.rect.R.width = self.previous_button.pos[0]
+			self.previous_button.rect.R.height = self.previous_button.pos[1]
 		if self.forward_button.image:
 			self.forward_button.set_image_dimensions((
 				self.forward_button.dimensions[0],
@@ -499,6 +502,12 @@ class OptionChooser(Panel):
 			))
 		else:
 			self.forward_button.pos[1] = (self.span_h - self.forward_button.dimensions[1])
+			self.forward_button.rect.R.width = self.forward_button.pos[0]
+			self.forward_button.rect.R.height = self.forward_button.pos[1]
+
+	def on_change(self, e, function, *args):
+		self.previous_button.on_click(e, function, *args)
+		self.forward_button.on_click(e, function, *args)
 
 	def draw(self, surface):
 		if hasattr(self, "image"): self.draw_image(surface)
