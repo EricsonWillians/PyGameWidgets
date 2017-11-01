@@ -164,38 +164,88 @@ class PanelSpecific(RectWidget):
 
 class TextLabel(PanelSpecific):
 
-	def __init__(self, parent, position_in_grid, text):
+	ALIGN_LEFT = 0
+	ALIGN_CENTER = 1
+	ALIGN_RIGHT = 2
+	DEFAULT_MARGIN = 6
+
+	def __init__(self, parent, position_in_grid, text, alignment=ALIGN_LEFT):
 		PanelSpecific.__init__(self, parent, position_in_grid)
+		self.text_rects = None
+		self.set_alignment(alignment)
 		self.set_text(text)
+		self.set_margin(TextLabel.DEFAULT_MARGIN)
 		
+	
 	def set_text(self, new_text):
+		if isinstance(new_text, str):
+			if '\n' in new_text:
+				self.texts = [core.Text(s) for s in new_text.split('\n')]
+				self.text_rects = [
+					t.font.render(t.value, 1, core.WHITE) for t in self.texts
+				]
+			else:
+				self.text = core.Text(new_text)
+				self.text_rect = self.text.font.render(
+					self.text.value, 
+					1, 
+					core.WHITE
+				)
+		else:
+			if '\n' in new_text.value:
+				self.texts = [
+					core.Text(s.lstrip(' '), new_text.size, new_text.color, new_text.font_name, new_text.bold, new_text.italic) for s in new_text.value.split('\n')
+				]
+				self.text_rects = [
+					t.font.render(t.value, 1, t.color) for t in self.texts
+				]
+			else:
+				self.text = new_text
+				self.text_rect = self.text.font.render(
+					self.text.value, 
+					1, 
+					new_text.color
+				)
 		self.half_w = self.dimensions[0] / 2
 		self.half_h = self.dimensions[1] / 2
-		if isinstance(new_text, str):
-			self.text = core.Text(new_text)
-			self.text_rect = self.text.font.render(
-				self.text.value, 
-				1, 
-				core.WHITE
-			)
-		else:
-			self.text = new_text
-			self.text_rect = self.text.font.render(
-				self.text.value, 
-				1, 
-				self.text.color
-			)
-		self.half_text_w = self.text_rect.get_rect().width / 2
-		self.half_text_h = self.text_rect.get_rect().height / 2
+		if not self.text_rects:
+			self.text_w = self.text_rect.get_rect().width
+			self.text_h = self.text_rect.get_rect().height
+			self.half_text_w = self.text_w / 2
+			self.half_text_h = self.text_h / 2
+
+	def set_alignment(self, alignment):
+		self.alignment = alignment
+
+	def set_margin(self, margin):
+		self.margin = margin
 
 	def draw(self, surface):
 		self.rect.draw(surface)
 		if hasattr(self, "border"): self.border.draw(surface)
 		if hasattr(self, "image"): self.draw_image(surface)
-		surface.blit(
-			self.text_rect, 
-			(self.pos[0] + (self.half_w - self.half_text_w), self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
-		)
+		if not self.text_rects:
+			if self.alignment == TextLabel.ALIGN_LEFT:
+				surface.blit(
+					self.text_rect, 
+					(self.pos[0] + self.margin, self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
+				)
+			elif self.alignment == TextLabel.ALIGN_CENTER:
+				surface.blit(
+					self.text_rect, 
+					(self.pos[0] + (self.half_w - self.half_text_w), self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
+				)
+			elif self.alignment == TextLabel.ALIGN_RIGHT:
+				surface.blit(
+					self.text_rect, 
+					(self.pos[0] + (self.dimensions[0] - (self.text_w + self.margin)), self.pos[1] + (self.half_h - self.half_text_h), self.dimensions[0], self.dimensions[1])
+				)
+		else:
+			for n in range(len(self.texts)):
+				surface.blit(
+					self.text_rects[n], 
+					(self.pos[0] + self.margin, self.pos[1] + (self.text_rects[n].get_rect().height * n), self.dimensions[0], self.dimensions[1])
+				)
 
 class RectButton(PanelSpecific):
 
@@ -412,7 +462,7 @@ class ToggleButton(RectButton):
 
 class OptionChooser(Panel):
 
-	def __init__(self, parent, position_in_grid, values=[]):
+	def __init__(self, parent, position_in_grid, values=[], default_index=0):
 		Panel.__init__(self, core.Grid((6, 1), (parent.get_cell_width(), parent.get_cell_height())), parent=parent, position_in_grid=position_in_grid, pos=None)
 		# self.set_color(core.TRANSPARENT)
 		
@@ -420,7 +470,7 @@ class OptionChooser(Panel):
 		self.previous_button.set_color(core.TRANSPARENT)
 		self.previous_button.set_image(os.path.join(os.path.dirname(os.path.abspath(__file__)), "gfx/gray_arrow_0.png"))
 		self.values = values
-		self.index = 0
+		self.index = default_index
 		if (self.values):
 			self.current_value = self.values[self.index]
 		else:
@@ -436,6 +486,10 @@ class OptionChooser(Panel):
 		self.forward_button = RectButton(self, (5, 0))
 		self.forward_button.set_color(core.TRANSPARENT)
 		self.forward_button.set_image(os.path.join(os.path.dirname(os.path.abspath(__file__)), "gfx/gray_arrow_1.png"))
+
+	def set_images(self, paths):
+		self.previous_button.set_image(os.path.join(os.path.dirname(os.path.abspath(__file__)), paths[0]))
+		self.forward_button.set_image(os.path.join(os.path.dirname(os.path.abspath(__file__)), paths[1]))
 
 	def update_text(self):
 		self.text = core.Text(
