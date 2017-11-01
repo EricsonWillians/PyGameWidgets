@@ -116,14 +116,6 @@ As you may have noticed in this example, it's also possible to span components. 
 And here's a multiline string TextLabel example with the Arial font:
 
 ```
-import sys
-sys.path.append("..")
-import pygame
-from PyGameWidgets import core
-from PyGameWidgets import widgets
-
-# Text label example.
-
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 728
 
@@ -154,9 +146,10 @@ if __name__ == "__main__":
             sunt in culpa qui officia deserunt
             mollit anim id est laborum.""", 13, core.BLACK)
     )
-    text.set_color(core.WHITE)
+    text.set_color(core.WHITE) # This is the color of the widget, not to be confused with the color of its text.
     text.set_span((0, 5))
     text.set_border(core.BLACK, 8)
+    text.set_margin(10) # Altering the margin because of the border.
 
     def redraw():
         pygame.display.flip()

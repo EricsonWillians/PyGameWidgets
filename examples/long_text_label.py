@@ -36,9 +36,10 @@ if __name__ == "__main__":
             sunt in culpa qui officia deserunt
             mollit anim id est laborum.""", 13, core.BLACK)
     )
-    text.set_color(core.WHITE)
+    text.set_color(core.WHITE) # This is the color of the widget, not to be confused with the color of its text.
     text.set_span((0, 5))
     text.set_border(core.BLACK, 8)
+    text.set_margin(10) # Altering the margin because of the border.
 
     def redraw():
         pygame.display.flip()
