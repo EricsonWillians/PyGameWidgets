@@ -165,7 +165,7 @@ while (running):
             sys.exit()
 ```
 
-![Multiline TextLabel](https://image.ibb.co/nEa9JG/Text_Label.png)
+![Multiline TextLabel](https://image.ibb.co/f2ywyG/Text_Label.png)
 
 The core module provides an array of standard colors that can be used in any component for border, background and font colors:
 
