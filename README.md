@@ -9,8 +9,8 @@ Import the `core` and `widgets` modules. Use relative imports (As in this exampl
 import sys
 sys.path.append("..")
 import pygame
-from PyGameWidgets import core
-from PyGameWidgets import widgets
+import core
+import widgets
 ```
 
 Here's a working example rendering multiple image buttons that change their text value for "pressed" and "released":
