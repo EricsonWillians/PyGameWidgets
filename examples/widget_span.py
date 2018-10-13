@@ -1,8 +1,8 @@
 import sys
 sys.path.append("..")
 import pygame
-from PyGameWidgets import core
-from PyGameWidgets import widgets
+import core
+import widgets
 
 # Widget span example.
 
