@@ -4,15 +4,6 @@ A straightforward widget toolkit for [Pygame](https://www.pygame.org).
 
 ## Getting Started
 
-Import the `core` and `widgets` modules. Use relative imports (As in this example) if necessary.
-```
-import sys
-sys.path.append("..")
-import pygame
-import core
-import widgets
-```
-
 Here's a working example rendering multiple image buttons that change their text value for "pressed" and "released":
 
 ```
