@@ -1,6 +1,6 @@
 import pygame
 import os
-import core
+from PyGameWidgets import core
 
 class Component:
 
